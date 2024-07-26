@@ -57,7 +57,7 @@ public class SteadyStateAnalysis {
                         System.out.println("Modello: " + builder.getNickName());
                         for (int poolSize : poolSizes) {
                                 System.out.println("PoolSize: " + poolSize);
-                                File file = new File( "experiments" + File.separator + builder.getNickName(), "size" + poolSize + "-" + formattedDate + ".csv");
+                                File file = new File( "experiment-results" + File.separator + builder.getNickName(), "size" + poolSize + "-" + formattedDate + ".csv");
                                 String filePath = file.getPath();
                                 createCsv(filePath, "trigger,Ko,Rej" );
 
