@@ -44,45 +44,45 @@ public class SequentialCoordinatedRejuvenationBuilder implements PoolRejuvenatio
         //Generating Connectors
         net.addInhibitorArc(Ko, rejuvenate);
         net.addInhibitorArc(Ko, trigger);
-        net.addPrecondition(RejChoice, noRej);
-        net.addPrecondition(Ok, rejOk);
-        net.addPostcondition(fail, Ko);
-        net.addPrecondition(Triggered, rejOk);
-        net.addPrecondition(Err, rejErr);
-        net.addPrecondition(Ok, err);
-        net.addPostcondition(rejuvenate, Ok);
-        net.addPrecondition(Rej, rejuvenate);
-        net.addPrecondition(Ko, repair);
-        net.addPostcondition(rejChoosen, Triggered);
-        net.addPostcondition(rejOk, Rej);
-        net.addPostcondition(rejuvenate, RejChoice);
-        net.addPrecondition(Triggered, rejErr);
-        net.addPrecondition(Err, fail);
-        net.addPrecondition(WaitTrigger, trigger);
-        net.addPostcondition(repair, Ok);
-        net.addPostcondition(trigger, RejChoice);
-        net.addPostcondition(err, Err);
         net.addPrecondition(RejChoice, rejChoosen);
+        net.addPostcondition(rejuvenate, RejChoice);
         net.addPostcondition(noRej, WaitTrigger);
+        net.addPrecondition(Triggered, rejErr);
+        net.addPrecondition(Err, rejErr);
+        net.addPrecondition(WaitTrigger, trigger);
+        net.addPrecondition(Rej, rejuvenate);
+        net.addPostcondition(rejOk, Rej);
+        net.addPostcondition(rejuvenate, Ok);
+        net.addPostcondition(repair, Ok);
+        net.addPrecondition(Ok, rejOk);
+        net.addPrecondition(Ko, repair);
+        net.addPrecondition(Triggered, rejOk);
+        net.addPrecondition(Err, fail);
+        net.addPostcondition(fail, Ko);
+        net.addPostcondition(rejChoosen, Triggered);
+        net.addPostcondition(err, Err);
+        net.addPrecondition(RejChoice, noRej);
+        net.addPrecondition(Ok, err);
+        net.addPostcondition(trigger, RejChoice);
         net.addPostcondition(rejErr, Rej);
 
         //Generating Properties
         marking.setTokens(Err, 0);
         marking.setTokens(Ko, 0);
-        marking.setTokens(Ok, 8);
+        marking.setTokens(Ok, 2);
         marking.setTokens(Rej, 0);
         marking.setTokens(RejChoice, 0);
         marking.setTokens(Triggered, 0);
         marking.setTokens(WaitTrigger, 1);
         err.addFeature(StochasticTransitionFeature.newExponentialInstance(new BigDecimal("1"), MarkingExpr.from("0.004166*Ok", net)));
         fail.addFeature(StochasticTransitionFeature.newExponentialInstance(new BigDecimal("1"), MarkingExpr.from("0.000463*Err", net)));
-        noRej.addFeature(StochasticTransitionFeature.newDeterministicInstance(new BigDecimal("0"), MarkingExpr.from("0.5*Ok+0.3", net)));
+        noRej.addFeature(StochasticTransitionFeature.newDeterministicInstance(new BigDecimal("0"), MarkingExpr.from("Ok+0.3", net)));
         noRej.addFeature(new Priority(0));
-        rejChoosen.addFeature(StochasticTransitionFeature.newDeterministicInstance(new BigDecimal("0"), MarkingExpr.from("0.3+3*Err", net)));
+        rejChoosen.addFeature(StochasticTransitionFeature.newDeterministicInstance(new BigDecimal("0"), MarkingExpr.from("0.3+6*Err", net)));
         rejChoosen.addFeature(new Priority(0));
-        rejErr.addFeature(StochasticTransitionFeature.newDeterministicInstance(new BigDecimal("0"), MarkingExpr.from("1-Err*0.1^Ok", net)));
+        rejErr.addFeature(StochasticTransitionFeature.newDeterministicInstance(new BigDecimal("0"), MarkingExpr.from("max(1-Err*0.1^Ok,0.0000001)", net)));
         rejErr.addFeature(new Priority(0));
-        rejOk.addFeature(StochasticTransitionFeature.newDeterministicInstance(new BigDecimal("0"), MarkingExpr.from("Err*0.1^Ok", net)));
+        rejOk.addFeature(StochasticTransitionFeature.newDeterministicInstance(new BigDecimal("0"), MarkingExpr.from("max(Err*0.1^Ok,0.00000001)", net)));
         rejOk.addFeature(new Priority(0));
         List<GEN> rejuvenate_gens = new ArrayList<>();
 
@@ -98,7 +98,7 @@ public class SequentialCoordinatedRejuvenationBuilder implements PoolRejuvenatio
         rejuvenate.addFeature(rejuvenate_feature);
 
         repair.addFeature(StochasticTransitionFeature.newExponentialInstance(new BigDecimal("1"), MarkingExpr.from("2*Ko", net)));
-        trigger.addFeature(StochasticTransitionFeature.newDeterministicInstance(new BigDecimal("100"), MarkingExpr.from("1", net)));
+        trigger.addFeature(StochasticTransitionFeature.newDeterministicInstance(new BigDecimal("0.1"), MarkingExpr.from("1", net)));
         trigger.addFeature(new Priority(0));
     }
 

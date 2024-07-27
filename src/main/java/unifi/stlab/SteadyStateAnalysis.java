@@ -42,8 +42,8 @@ public class SteadyStateAnalysis {
 
                 ArrayList<PoolRejuvenationBuilder> models = new ArrayList<>();
                 models.add(uncoordinatedBuilder);
-                //models.add(sequentialbuilder);
-                //models.add(parallelbuilder);
+                models.add(sequentialbuilder);
+                models.add(parallelbuilder);
 
                 int leftBound = 5;
                 int rightBound = 5000;

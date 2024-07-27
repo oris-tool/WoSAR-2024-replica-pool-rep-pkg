@@ -33,26 +33,26 @@ public class UncoordinatedRejuvenationBuilder implements PoolRejuvenationBuilder
         Transition repair = net.addTransition("repair");
 
         //Generating Connectors
-        net.addPrecondition(Ok, err);
-        net.addPrecondition(Ko, repair);
-        net.addPrecondition(Err, fail);
-        net.addPrecondition(RejPool, rejuvenate);
-        net.addPostcondition(repair, Ok);
-        net.addPostcondition(err, Err);
-        net.addPrecondition(Err, rejErrTrigger);
-        net.addPostcondition(rejuvenate, Ok);
-        net.addPrecondition(Ok, rejOkTrigger);
-        net.addPostcondition(fail, Ko);
-        net.addPrecondition(RejErrChoice, rejErr);
-        net.addPostcondition(rejErr, RejPool);
-        net.addPrecondition(RejOkChoice, rejOk);
-        net.addPostcondition(rejOk, RejPool);
-        net.addPrecondition(RejErrChoice, noRejErr);
-        net.addPrecondition(RejOkChoice, noRejOk);
-        net.addPostcondition(rejErrTrigger, RejErrChoice);
-        net.addPostcondition(rejOkTrigger, RejOkChoice);
         net.addPostcondition(noRejOk, Ok);
+        net.addPrecondition(Err, fail);
+        net.addPostcondition(rejOkTrigger, RejOkChoice);
+        net.addPostcondition(repair, Ok);
+        net.addPostcondition(fail, Ko);
+        net.addPostcondition(err, Err);
+        net.addPostcondition(rejuvenate, Ok);
+        net.addPrecondition(Ok, err);
+        net.addPostcondition(rejErrTrigger, RejErrChoice);
+        net.addPrecondition(Err, rejErrTrigger);
+        net.addPostcondition(rejOk, RejPool);
+        net.addPrecondition(RejOkChoice, noRejOk);
+        net.addPrecondition(RejErrChoice, noRejErr);
+        net.addPrecondition(Ok, rejOkTrigger);
         net.addPostcondition(noRejErr, Err);
+        net.addPostcondition(rejErr, RejPool);
+        net.addPrecondition(RejErrChoice, rejErr);
+        net.addPrecondition(RejPool, rejuvenate);
+        net.addPrecondition(Ko, repair);
+        net.addPrecondition(RejOkChoice, rejOk);
 
         //Generating Properties
         marking.setTokens(Err, 0);
