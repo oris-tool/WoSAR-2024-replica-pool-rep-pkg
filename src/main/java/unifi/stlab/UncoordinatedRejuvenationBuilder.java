@@ -111,6 +111,19 @@ public class UncoordinatedRejuvenationBuilder implements PoolRejuvenationBuilder
     }
 
     @Override
+    public String getPerformabilityReward(int bound) {
+        if(bound == 0)
+            return getPerformabilityReward();
+        else
+            return "Ko+RejPool>=" + bound;
+    }
+
+    @Override
+    public String getPerformabilityReward() {
+        return "Ko+RejPool";
+    }
+
+    @Override
     public String getModulatedUnreliabilityReward(int module) {
         return "Ko/" + module;
     }

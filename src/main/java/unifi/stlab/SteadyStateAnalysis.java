@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.oristool.models.stpn.*;
@@ -35,6 +36,12 @@ public class SteadyStateAnalysis {
 
                 int[] poolSizes = {1, 2, 4, 8};
 
+                Map<Integer,Integer> performabilityBoundMap = new HashMap<>();
+                performabilityBoundMap.put(1, 0);
+                performabilityBoundMap.put(2, 1);
+                performabilityBoundMap.put(4, 2);
+                performabilityBoundMap.put(8, 3);
+
 
                 PoolRejuvenationBuilder uncoordinatedBuilder = new UncoordinatedRejuvenationBuilder();
                 PoolRejuvenationBuilder sequentialbuilder = new SequentialCoordinatedRejuvenationBuilder();
@@ -59,13 +66,14 @@ public class SteadyStateAnalysis {
                                 System.out.println("PoolSize: " + poolSize);
                                 File file = new File( "experiment-results" + File.separator + builder.getNickName(), "size" + poolSize + "-" + formattedDate + ".csv");
                                 String filePath = file.getPath();
-                                createCsv(filePath, "trigger,Ko,Rej" );
+                                createCsv(filePath, "trigger,Ko,Rej,Performability" );
 
 
 
                                 String unavailabilityReward = builder.getUnavailabilityReward();
                                 String unreliabilityReward = builder.getUnreliabilityReward();
-                                String rewards = unavailabilityReward + ";" + unreliabilityReward;
+                                String performabilityReward = builder.getPerformabilityReward(performabilityBoundMap.get(poolSize));
+                                String rewards = unavailabilityReward + ";" + unreliabilityReward + ";" + performabilityReward;
 
                                 RegSteadyState analysis = RegSteadyState.builder().build();
 
@@ -85,8 +93,9 @@ public class SteadyStateAnalysis {
                                         BigDecimal reliability = steadyState.entrySet().stream().filter(t -> t.getKey().toString().equals(unreliabilityReward)).findFirst().get().getValue();
                                         //BigDecimal availability = steadyState.entrySet().stream().filter(t -> t.getKey().toString().equals("Ko+Rej")).findFirst().get().getValue();
                                         BigDecimal availability = steadyState.entrySet().stream().filter(t -> t.getKey().toString().equals(unavailabilityReward)).findFirst().get().getValue();
+                                        BigDecimal performability = steadyState.entrySet().stream().filter(t -> t.getKey().toString().equals(performabilityReward)).findFirst().get().getValue();
 
-                                        addRow(filePath, waitTrigger, reliability, availability);
+                                        addRow(filePath, waitTrigger, reliability, availability, performability);
 
                                 }
 
@@ -164,10 +173,10 @@ public class SteadyStateAnalysis {
                 }
         }
 
-        public static void addRow(String filePath,int col0, BigDecimal col1, BigDecimal col2) {
+        public static void addRow(String filePath,int col0, BigDecimal col1, BigDecimal col2, BigDecimal col3) {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
                         // Aggiunge una nuova riga al file CSV
-                        writer.write(col0 + "," + col1.toString() + "," + col2.toString());
+                        writer.write(col0 + "," + col1.toString() + "," + col2.toString() + "," + col3.toString());
                         writer.newLine();
                 } catch (IOException e) {
                         e.printStackTrace();

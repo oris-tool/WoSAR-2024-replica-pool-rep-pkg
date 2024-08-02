@@ -137,6 +137,19 @@ public class SequentialCoordinatedRejuvenationBuilder implements PoolRejuvenatio
     }
 
     @Override
+    public String getPerformabilityReward(int bound) {
+        if(bound == 0)
+            return getPerformabilityReward();
+        else
+            return "Ko+Rej>=" + bound;
+    }
+
+    @Override
+    public String getPerformabilityReward() {
+        return "Ko+Rej";
+    }
+
+    @Override
     public String getNickName() {
         return "coordinated-sequential";
     }

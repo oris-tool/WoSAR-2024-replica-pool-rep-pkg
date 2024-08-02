@@ -17,6 +17,10 @@ public interface PoolRejuvenationBuilder {
 
     String getUnreliabilityReward();
 
+    String getPerformabilityReward(int bound);
+
+    String getPerformabilityReward();
+
     String getModulatedUnreliabilityReward(int module);
 
     String getNumberedUnreliabilityReward(int module);
