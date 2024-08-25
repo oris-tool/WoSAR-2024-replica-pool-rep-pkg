@@ -1,3 +1,8 @@
+
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13370986.svg)](https://doi.org/10.5281/zenodo.13370986)
+
+
 # Quantitative evaluation of software rejuvenation of a pool of service replicas
 
 This repository is a companion page for the following publication  accepted to the 16th International Workshop on Software Aging and Rejuvenation ([WoSAR 2024](https://www.wosar.net/)):
