@@ -37,5 +37,7 @@ build/
 ### IntelliJ ###
 .idea/
 
+.metadata/
+
 ### Mac OS ###
 .DS_Store
